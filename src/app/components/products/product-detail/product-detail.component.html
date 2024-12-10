@@ -4,7 +4,7 @@
     <h1 class="text-3xl font-bold">{{ product.name }}</h1>
     <p class="text-lg mt-2">{{ product.description }}</p>
     <p class="text-xl font-semibold mt-4">€{{ product.price }}</p>
-    <button class="bg-blue-500 text-white px-6 py-2 mt-6 rounded">
+    <button class="bg-blue-500 text-white px-6 py-2 mt-6 rounded" (click)="goToProductList()">
         Añadir al carrito
     </button>
 </div>
