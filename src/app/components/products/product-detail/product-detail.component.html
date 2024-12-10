@@ -1,0 +1,11 @@
+@if(product){
+<div class="p-6">
+    <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-full h-60 object-cover mb-4">
+    <h1 class="text-3xl font-bold">{{ product.name }}</h1>
+    <p class="text-lg mt-2">{{ product.description }}</p>
+    <p class="text-xl font-semibold mt-4">€{{ product.price }}</p>
+    <button class="bg-blue-500 text-white px-6 py-2 mt-6 rounded">
+        Añadir al carrito
+    </button>
+</div>
+}

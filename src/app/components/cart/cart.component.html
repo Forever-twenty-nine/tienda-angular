@@ -1,0 +1,29 @@
+<div class="p-6">
+    <h1 class="text-2xl font-bold mb-4">Carrito de compras</h1>
+    @if(cartItems.length > 0){
+
+    @for(item of cartItems; track item.product.id){
+    <div class="flex items-center justify-between border-b py-4">
+        <div>
+            <h2 class="text-lg font-bold">{{ item.product.name }}</h2>
+            <p class="text-sm">{{ item.product.description }}</p>
+            <p class="text-sm font-semibold">€{{ item.product.price }}</p>
+        </div>
+        <div class="flex items-center">
+            <button class="text-red-500 ml-4" (click)="removeFromCart(item.product.id)">
+                Eliminar
+            </button>
+        </div>
+    </div>
+    }
+    <div class="mt-6">
+        <p class="text-lg font-bold">Total: €{{ total }}</p>
+        <button class="bg-red-500 text-white px-4 py-2 mt-4 rounded" (click)="clearCart()">
+            Vaciar carrito
+        </button>
+    </div>
+    }@else{
+    <p class="text-center text-gray-500">Tu carrito está vacío.</p>
+    }
+
+</div>
