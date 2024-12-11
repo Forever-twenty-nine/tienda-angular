@@ -24,6 +24,11 @@ export class CartService {
     }
   }
 
+  getProductQuantity(productId: number): number {
+    const item = this.cartItemsSignal().find(item => item.product.id === productId);
+    return item ? item.quantity : 0;
+  }
+
   getCartItems(): CartItem[] {
     return this.cartItemsSignal();
   }
