@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CartService } from '../../services/cart.service';
-import { Product } from '../../models/product.model';
+import { CartItem } from '../../models/cart.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './cart.component.html',
 })
 export class CartComponent implements OnInit {
 
-  cartItems: Product [] = [];
-  total: number = 0;
-
+  public cartItemsSignal = signal<CartItem[]>([]);
   constructor(private cartService: CartService) { }
 
   ngOnInit(): void {
@@ -19,8 +18,7 @@ export class CartComponent implements OnInit {
   }
 
   loadCart(): void {
-    this.cartItems = this.cartService.getCartItems();
-    this.total = this.cartService.getTotal();
+    this.cartItemsSignal.set(this.cartService.getCartItems());
   }
 
   updateQuantity(productId: number, quantity: number): void {

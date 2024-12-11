@@ -1,4 +1,4 @@
-import { Component, OnChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 
@@ -7,17 +7,11 @@ import { CartService } from '../../../services/cart.service';
   imports: [RouterLink],
   templateUrl: './navbar.component.html',
 })
-export class NavbarComponent implements OnChanges {
+export class NavbarComponent {
 
-
-  cartCount: number;
+  cartCount: any;
 
   constructor(private cartService: CartService) {
-    this.cartCount = this.cartService.cartCountSignal();
+    this.cartCount = this.cartService.cartCountSignal;
   }
-
-  ngOnChanges(): void {
-    this.cartCount = this.cartService.cartCountSignal();
-  }
-  
 }
