@@ -1,0 +1,20 @@
+<div class="admin-layout flex h-screen bg-gray-100">
+    <aside class="w-64 bg-gray-200 p-4">
+        <nav>
+            <ul>
+                <li><a routerLink="dashboard" routerLinkActive="active"
+                        class="block p-2 hover:bg-gray-300">Dashboard</a></li>
+                <li><a routerLink="products" routerLinkActive="active" class="block p-2 hover:bg-gray-300">Productos</a>
+                </li>
+                <li><a routerLink="users" routerLinkActive="active" class="block p-2 hover:bg-gray-300">Usuarios</a>
+                </li>
+                <li><a routerLink="orders" routerLinkActive="active" class="block p-2 hover:bg-gray-300">Pedidos</a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="flex-1 p-6">
+        <router-outlet></router-outlet>
+    </main>
+</div>

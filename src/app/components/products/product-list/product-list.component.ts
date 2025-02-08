@@ -6,7 +6,7 @@ import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
-  imports: [  RouterLink ],
+  imports: [RouterLink],
   templateUrl: './product-list.component.html'
 })
 export class ProductListComponent {
