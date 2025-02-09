@@ -1,42 +1,62 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { LoginCredentials } from '../../models/login-credentials.model';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
+// primeng
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [
+    RouterLink,
+    ReactiveFormsModule, 
+    FormsModule, 
+    InputTextModule, 
+    ButtonModule, 
+    FloatLabelModule,
+    MessageModule
+  ],
   templateUrl: './login.component.html'
-
 })
 export class LoginComponent {
 
-  credentials: LoginCredentials = { username: '', password: '' }; // Modelo para las credenciales
+  credentials: LoginCredentials = { username: '', password: '' };
   errorMessage: string = '';
+
+  loginForm = new FormGroup({
+    username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.email]), // Added email validator
+    password: new FormControl('', Validators.required)
+  });
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  login(): void {
-    this.errorMessage = ''; // Limpia cualquier mensaje de error previo
+  async login(): Promise<void> { // Make login method async
+    this.errorMessage = '';
 
-    this.authService.login(this.credentials).subscribe({
-      next: (success) => {
+    if (this.loginForm.valid) {
+      const loginCredentials: LoginCredentials = this.loginForm.value as LoginCredentials;
+
+      try {
+        const success = await this.authService.login(loginCredentials); // Call async login and wait for result
         if (success) {
-          // Login exitoso, redirige al dashboard de admin o a donde corresponda
-          this.router.navigate(['/admin/dashboard']); // Ejemplo: redirige al dashboard
+          this.router.navigate(['/admin/dashboard']);
         } else {
-          // Aunque en el mock siempre devuelve true si las credenciales son correctas,
-          // en un escenario real aquí podrías manejar un caso de éxito falso (raro, pero posible)
-          this.errorMessage = 'Error inesperado al iniciar sesión.';
+          this.errorMessage = 'Error inesperado al iniciar sesión.'; // Should not usually reach here with Firebase
         }
-      },
-      error: (error) => {
-        // Error en el login (credenciales inválidas, error del servidor, etc.)
-        this.errorMessage = 'Credenciales inválidas. Por favor, inténtalo de nuevo.'; // Mensaje de error genérico
-        console.error('Error de login:', error); // Log para debugging, no mostrar errores técnicos al usuario final
+      } catch (error: any) {
+        this.errorMessage = error.message; // Error message from Firebase (user-friendly)
+        console.error('Login error:', error);
       }
-    });
+    } else {
+      this.errorMessage = 'Por favor, completa todos los campos.';
+    }
   }
 
+  get usernameControl() { return this.loginForm.get('username'); }
+  get passwordControl() { return this.loginForm.get('password'); }
 }
