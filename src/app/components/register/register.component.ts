@@ -1,58 +1,71 @@
+// angular imports
 import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
-import { LoginCredentials } from '../../models/login-credentials.model'; // Aunque usemos LoginCredentials, en un caso real, crearías un RegisterCredentials
+import { Router ,RouterLink } from '@angular/router';
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 // primeng
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { FloatLabelModule } from 'primeng/floatlabel';
+// services
+import { AuthService } from '../../services/auth.service';
+// models
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, InputTextModule, ButtonModule, RippleModule, FloatLabelModule],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    RouterLink,
+    InputTextModule,
+    ButtonModule,
+    RippleModule,
+    FloatLabelModule
+  ],
   templateUrl: './register.component.html'
 })
 export class RegisterComponent {
 
-  credentials: LoginCredentials = { username: '', password: '' }; //  In real case,  you might use RegisterCredentials model
+  credentials: User = { email: '', password: '' };
   errorMessage: string = '';
   successMessage: string = '';
 
   registerForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.email]), // Added email validator
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6)])
   });
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  async register(): Promise<void> { // Make register method async
+  async register(): Promise<void> {
+
     this.errorMessage = '';
     this.successMessage = '';
 
     if (this.registerForm.valid) {
-      const registerCredentials: LoginCredentials = this.registerForm.value as LoginCredentials;
+      const userCredentials: User = this.registerForm.value as User;
 
       try {
-        const success = await this.authService.register(registerCredentials); // Call async register and wait
+        const success = await this.authService.register(userCredentials);
         if (success) {
           this.successMessage = 'Registro exitoso. Por favor, inicia sesión.';
-          // Optionally redirect to login after successful registration
-          // this.router.navigate(['/login']);
+          this.router.navigate(['/login']);
+
         } else {
-          this.errorMessage = 'Error inesperado al registrar usuario.'; // Shouldn't usually reach here with Firebase
+          this.errorMessage = 'Error inesperado al registrar usuario.';
         }
       } catch (error: any) {
-        this.errorMessage = error.message; // Error message from Firebase (user-friendly)
+        this.errorMessage = error.message;
         console.error("Registration error:", error);
       }
     } else {
       this.errorMessage = 'Por favor, completa correctamente todos los campos.';
     }
+
   }
 
-  get usernameControl() { return this.registerForm.get('username'); }
+  get usernameControl() { return this.registerForm.get('email'); }
   get passwordControl() { return this.registerForm.get('password'); }
+
 }

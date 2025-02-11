@@ -20,6 +20,14 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: Aura
       }
-    }), provideFirebaseApp(() => initializeApp({ projectId: "ftn-site-app", appId: "1:720382724612:web:31d93cba63f247c1d50351", storageBucket: "ftn-site-app.firebasestorage.app", apiKey: "AIzaSyAvLALRkAeltK6IvMBatIxSapmFIr_BOdI", authDomain: "ftn-site-app.firebaseapp.com", messagingSenderId: "720382724612", measurementId: "G-RH4G68C5FR" })), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage())
+    }), provideFirebaseApp(() => initializeApp({
+      projectId: "ftn-site-app",
+      appId: "1:720382724612:web:31d93cba63f247c1d50351",
+      storageBucket: "ftn-site-app.firebasestorage.app",
+      apiKey: "AIzaSyAvLALRkAeltK6IvMBatIxSapmFIr_BOdI",
+      authDomain: "ftn-site-app.firebaseapp.com",
+      messagingSenderId: "720382724612",
+      measurementId: "G-RH4G68C5FR"
+    })), provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage())
   ]
 };

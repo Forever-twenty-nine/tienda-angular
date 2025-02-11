@@ -1,49 +1,32 @@
 <div class="relative h-screen bg-cover bg-center">
-    <div class="absolute inset-0 bg-gray-900 bg-opacity-50"></div>
-    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-sm">
-        <div class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
-            <h2 class="block text-gray-700 text-2xl font-bold mb-6 text-center">Iniciar Sesión</h2>
+
+    <div class="absolute inset-0 flex items-center justify-center">
+
+        <div class="bg-white shadow-md rounded-lg p-4 mb-4 dark:bg-gray-800">
+
+            <h2 class="block text-gray-700 text-2xl font-bold mb-6 text-center dark:text-amber-200">Iniciar Sesión</h2>
+
+            <form [formGroup]="loginForm" (ngSubmit)="login()" class="flex flex-col gap-4 items-center">
+
+                @if(loginForm.invalid && (loginForm.dirty || loginForm.touched))
+                {
+                <p-message severity="error" text={{loginForm.errors}}></p-message>
+                }
+
+                <p-floatlabel variant="on">
+                    <input pInputText id="email" formControlName="email" class="w-full"/>
+                    <label for="email">Email</label>
+                </p-floatlabel>
 
 
+                <p-floatlabel variant="on">
+                    <input pInputText id="password" formControlName="password" class="w-full" />
+                    <label for="password">Contraseña</label>
+                </p-floatlabel>
 
-            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <p-button label="Iniciar Sesión" type="submit" />
 
-                <div class="mb-4">
-                    <p-floatlabel variant="on">
-                        <input pInputText id="username" formControlName="username" class="w-full" />
-                        <label for="username">Usuario</label>
-                    </p-floatlabel>
-
-                    @if(loginForm.invalid && (loginForm.dirty || loginForm.touched))
-                    {
-                    <p-message severity="error" text="El usuario es requerido"></p-message>
-                    }
-
-                </div>
-
-
-                <div class="mb-6">
-                    <p-floatlabel variant="on">
-                        <input pInputText id="password" formControlName="password" class="w-full" />
-                        <label for="password">Contraseña</label>
-                    </p-floatlabel>
-                </div>
-
-                <div class="mb-4">
-                    @if(errorMessage)
-                    {
-                    <p-message severity="error" text="{{errorMessage}}"></p-message>
-                    }
-
-                </div>
-
-                <p-button label="Iniciar Sesión" type="submit" class="rounded-lg" />
-
-                <div class="mt-4 text-center">
-
-                    <p-button label="¿No tienes cuenta? Regístrate" severity="secondary" routerLink="/register" />
-
-                </div>
+                <p-button label="¿No tienes cuenta? Regístrate" severity="secondary" routerLink="/register" />
 
             </form>
 

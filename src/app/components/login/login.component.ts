@@ -1,15 +1,18 @@
+// Angular
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { LoginCredentials } from '../../models/login-credentials.model';
+// forms
 import { ReactiveFormsModule, FormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 // primeng
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageModule } from 'primeng/message';
-
+// service
+import { AuthService } from '../../services/auth.service';
+// models 
+import { User } from '../../models/user.model';
 @Component({
   selector: 'app-login',
   imports: [
@@ -25,31 +28,31 @@ import { MessageModule } from 'primeng/message';
 })
 export class LoginComponent {
 
-  credentials: LoginCredentials = { username: '', password: '' };
+  credentials: User = { email: '', password: '' };
   errorMessage: string = '';
 
   loginForm = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.email]), // Added email validator
+    email: new FormControl('', [Validators.required,  Validators.email]), 
     password: new FormControl('', Validators.required)
   });
 
   constructor(private authService: AuthService, private router: Router) { }
 
-  async login(): Promise<void> { // Make login method async
+  async login(): Promise<void> { 
     this.errorMessage = '';
 
     if (this.loginForm.valid) {
-      const loginCredentials: LoginCredentials = this.loginForm.value as LoginCredentials;
+      const loginCredentials: User = this.loginForm.value as User;
 
       try {
-        const success = await this.authService.login(loginCredentials); // Call async login and wait for result
+        const success = await this.authService.login(loginCredentials); 
         if (success) {
-          this.router.navigate(['/admin/dashboard']);
+          this.router.navigate(['/home']);
         } else {
-          this.errorMessage = 'Error inesperado al iniciar sesión.'; // Should not usually reach here with Firebase
+          this.errorMessage = 'Error inesperado al iniciar sesión.';
         }
       } catch (error: any) {
-        this.errorMessage = error.message; // Error message from Firebase (user-friendly)
+        this.errorMessage = error.message; 
         console.error('Login error:', error);
       }
     } else {
