@@ -1,9 +1,8 @@
 // angular 
-import { Component } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 // primeNg
 import { MenuItem } from 'primeng/api';
-import { Menu } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { MenubarModule } from 'primeng/menubar';
 // services
@@ -14,8 +13,8 @@ import { AuthService } from '../../../services/auth.service';
   selector: 'app-navbar',
   imports:
     [
-      Menu,
-      RouterLink,
+     // Menu,
+      //RouterLink,
       MenubarModule,
       ButtonModule
     ],
@@ -23,32 +22,27 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class NavbarComponent {
 
-
-  menuItems: MenuItem[] = [];
-  userMenu: MenuItem[] = [];
+  user: boolean = false;
+  menuItems: MenuItem[] = 
+  [
+    { label: 'Productos', icon: 'pi pi-box', routerLink: '/products' },
+    { label: 'Carrito', icon: 'pi pi-shopping-cart', routerLink: '/cart' },
+    { label: 'Iniciar Sesión', icon: 'pi pi-sign-in', routerLink: '/login' , visible: !this.user},
+  ];
 
   cartCount: any;
-  user: any;
   menuOpen: boolean = false;
 
   constructor(private cartService: CartService, private authService: AuthService) {
     this.cartCount = this.cartService.cartCountSignal;
-    this.user = this.authService.isAuthenticated();
-  }
-  setupMenuItems() {
-    this.menuItems = [
-      { label: 'Productos', icon: 'pi pi-box', routerLink: '/products' },
-      { label: 'Carrito', icon: 'pi pi-shopping-cart', routerLink: '/cart' },
-    ];
-  }
+    
+    // this.user = computed(() => {
+    //   if (this.authService.isAuthenticated()) {
+    //     return true;
+    //   } else {
+    //     return false;
+    // });
 
-  setupUserMenu() {
-    this.userMenu = this.user
-      ? [
-        { label: 'Ver Perfil', icon: 'pi pi-user', routerLink: '/profile' },
-        { label: 'Cerrar Sesión', icon: 'pi pi-sign-out', command: () => this.logout() }
-      ]
-      : [];
   }
 
   toggleMenu() {
