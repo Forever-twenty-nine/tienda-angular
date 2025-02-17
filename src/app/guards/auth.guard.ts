@@ -6,13 +6,13 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const isAuthenticated = authService.isAuthenticated() // Lee el valor del Signal directamente
+  const isAuthenticated = authService.isAuthenticated()
 
   if (isAuthenticated()) {
-    return true; // Si está autenticado, permite la activación de la ruta
+    return true;
   } else {
-    // Si no está autenticado, redirige a la página de login y previene la activación
-    console.log('Acceso no autorizado, redirigiendo a login'); // Mensaje de consola si no está autenticado
-    return router.createUrlTree(['/login']); // Crea un UrlTree para la redirección
+
+    console.log('Acceso no autorizado, redirigiendo a login');
+    return router.createUrlTree(['/login']);
   }
 };

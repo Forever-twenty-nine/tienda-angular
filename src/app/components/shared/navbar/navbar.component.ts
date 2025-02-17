@@ -13,8 +13,6 @@ import { AuthService } from '../../../services/auth.service';
   selector: 'app-navbar',
   imports:
     [
-     // Menu,
-      //RouterLink,
       MenubarModule,
       ButtonModule
     ],
@@ -35,13 +33,6 @@ export class NavbarComponent {
 
   constructor(private cartService: CartService, private authService: AuthService) {
     this.cartCount = this.cartService.cartCountSignal;
-    
-    // this.user = computed(() => {
-    //   if (this.authService.isAuthenticated()) {
-    //     return true;
-    //   } else {
-    //     return false;
-    // });
 
   }
 
